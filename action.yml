@@ -1,0 +1,20 @@
+name: actions/docker-tag-exists
+description: "Check if image tag exists and set env.docker_tag_exists accordingly"
+inputs:
+  tag:
+    description: "The image Tag address e.g. ghcr.io/owner/repo:tag"
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Inspect docker manifest for specified tag
+      shell: sh
+      run: |
+        set -euo pipefail
+        if docker manifest inspect "$tag" > /dev/null 2>&1; then
+          echo "Tag $tag already exists. docker_tag_exists=true"
+          echo "docker_tag_exists=true" >> $GITHUB_ENV
+        else
+          echo "Tag $tag does not exist. docker_tag_exists=false"
+          echo "docker_tag_exists=false" >> $GITHUB_ENV
+        fi
