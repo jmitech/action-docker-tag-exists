@@ -10,7 +10,7 @@ runs:
     - name: Inspect docker manifest for specified tag
       shell: sh
       run: |
-        set -euo pipefail
+        set -euo
         if docker manifest inspect "$tag" > /dev/null 2>&1; then
           echo "Tag $tag already exists. docker_tag_exists=true"
           echo "docker_tag_exists=true" >> $GITHUB_ENV
